@@ -1,6 +1,6 @@
 ---
 name: archify
-description: "Create validated architecture, workflow, sequence, data-flow, lifecycle/state, ERD, class, tree, timeline, and waterfall diagrams as explorable standalone HTML with dark/light themes, motion and image/SVG/WebM export. Accept requirements or Mermaid; inspect repository evidence for code-backed diagrams. Use when visualizing systems, API calls, pipelines, schemas, histories, timings, or everyday steps, parts, relationships and states. Also turn an answer into a one-page explainer, with the conclusion first, structured panels, native diagrams and charts, when the user asks for a page, an explainer or an answer to share (做成一页, 用页面讲), or proactively when the user's rules opt in with an [archify explainer: ...] line. Not for dashboards."
+description: "Use only when the user names archify, asks for an interactive or explorable HTML diagram (인터랙티브, 클릭해서 탐색, 노드를 눌러 따라가는), or asks for a diagram traced from a code repository with links back to source files (코드 저장소 기반, 소스 링크). In that form it covers architecture, workflow, sequence, data-flow, state, ERD, class, tree, timeline and waterfall diagrams. A diagram request without one of those cues is not for this skill, even when it is an ERD, sequence or architecture diagram: it goes through tech-diagram-house-rules, which picks the generator. One-page explainers and answer pages only when the user names archify. Not for dashboards or charts."
 license: Apache-2.0
 metadata:
   version: "3.2"
