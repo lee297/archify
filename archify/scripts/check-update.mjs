@@ -52,7 +52,9 @@ function silent(reason) {
 }
 
 function updatesDisabled() {
-  return process.env.ARCHIFY_UPDATE_CHECK_DISABLED === '1';
+  // Fork: the update check is off unless ARCHIFY_UPDATE_CHECK_ENABLED=1 is set.
+  return process.env.ARCHIFY_UPDATE_CHECK_ENABLED !== '1'
+    || process.env.ARCHIFY_UPDATE_CHECK_DISABLED === '1';
 }
 
 function isPlainObject(value) {

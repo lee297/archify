@@ -18,7 +18,7 @@ For a native diagram of a real codebase, read [Repository authoring](references/
 ## Choose the artifact
 
 - When the user asks to draw or visualize a system, flow, schema or history, use a native diagram and the Type router.
-- Use `explainer` when the user asks for the answer as a page: a page, one page, an explainer, something to share (“做成一页”, “用页面讲”, “answer with a page”). Without such a request, answer in text or draw the requested diagram. A page made on request ends its reply with the one-line mode offer under Output.
+- Use `explainer` when the user asks for the answer as a page: a page, one page, an explainer, something to share (“做成一页”, “用页面讲”, “answer with a page”). Without such a request, answer in text or draw the requested diagram.
 - A rules line in context changes this. `[archify explainer: proactive]`: also make a page, unasked, for an explanation, comparison, trade-off, decision, diagnosis, review or plan that needs a table, steps or several sections. `[archify explainer: always-on]`: every reply that reaches a conclusion also gets a compact page of at most four panels, delivered without opening it, its link closing the reply. `[archify explainer: on-demand]`: only when asked, and never offer a mode.
 - In every mode a page needs a conclusion with some structure behind it: chat, one-line answers, raw command output and text-only requests get none.
 - For `explainer`, read [Explainer authoring](references/explainer-authoring.md) for its conclusion, reasons, scope, board layout and optional native diagrams. Write the complete draft, then run `finalize explainer` for validation, atomic delivery and artifact checks. Use panel patch for local content revisions.
@@ -26,8 +26,6 @@ For a native diagram of a real codebase, read [Repository authoring](references/
 ## Existing candidate handoff
 
 When the user supplies a frozen candidate, run `finalize` first as one CLI invocation. Its passing receipt completes the automated gates; follow any visual review recommendation under Delivery before claiming visual quality. For repair, follow step 5.
-
-`finalize` includes a bounded update check in its delivery receipt; see Update awareness.
 
 ## Native diagram authoring
 
@@ -48,9 +46,15 @@ Use this path for ordinary generation. Read branch references only when their st
 
 5. A non-zero exit is never success. Read compact stdout or `evidence.summaryReceipt`, then [repair the failed gate](references/delivery-contract.md#failed-finalize-and-candidate-repair), including its repair limit. Preserve requested meaning and source evidence. For several tangled Architecture routes, read [Architecture layout repair](references/architecture-layout-repair.md); for measured field or geometry failures, read [Authoring contract](references/authoring-contract.md). Edit the connected neighborhood and rerun the complete `finalize` command from step 4. Once a run has reached `browser-check`, the output path owns that evidence: give every later run its own `--out-dir <folder>/review-<n>`.
 
-## Update awareness
+## Local only
 
-`finalize` and standalone `deliver` include `update` in their receipts. Do not run a separate check for the same delivery. If `update.noticeRequired` is true, read `references/update-awareness.md` and keep one compact update notice in your final response to the user, even after a quality gate fails. For a task with several diagrams, mention the update once in the final response. Snooze or ignore a reminder only when the user explicitly asks; never install or update on your own initiative.
+This fork is hardened for work on internal and customer systems:
+
+- **No update check.** `finalize` and `deliver` make no network request; the receipt reports `update.status: "unavailable"` with reason `disabled`. Do not set `ARCHIFY_UPDATE_CHECK_ENABLED`, do not run `scripts/check-update.mjs`, and do not offer to update Archify. The user updates the checkout with git.
+- **Never upload.** Do not send a candidate, an HTML artifact, an export or a capture to any gallery, paste site, hosting or sharing service, and do not offer to. Hand over the local path.
+- **Brand capture is the only network access left.** `brands capture <url>` and a `brand.url` in a candidate fetch that site's icon. Use them only with a public vendor URL the user supplied; never pass an internal, customer or private address, and never set `ARCHIFY_BRAND_ALLOW_PRIVATE`.
+- **Repository-backed diagrams carry source.** They embed file paths, the remote URL and code excerpts, so treat the HTML as confidential as the repository it came from and say so when handing it over.
+- **Never edit agent rules files.** Do not add an `[archify explainer: ...]` line, or anything else, to `~/.claude/CLAUDE.md`, `AGENTS.md` or any other rules file, and do not offer to.
 
 Before the first candidate, use the authoring references and relevant repository source, not Archify implementation or tests. Inspect Archify implementation if diagnostics remain unactionable after focused repairs.
 
@@ -128,10 +132,8 @@ Reply in the user's language, as briefly as the result allows; the diagram carri
 - State anything that changes how the diagram should be read: the abstraction level or deliberately omitted parts when a reader might expect them, illustrative rather than measured values, missing source evidence, or requested content dropped or merged during repair.
 - For several diagrams, report completion once with a link to an existing overview or compact per-diagram links, not a directory path.
 
-Do not recap commands, repair rounds, hashes, quality profiles, or check lists; they stay in the receipts. If asked whether the diagram was verified, answer in one line, such as “Automated checks passed; not visually reviewed.” Give receipt links and details only for reproducibility or troubleshooting. Disclose requested visual review that could not run, and claim visual inspection only when performed. Keep the required update notice under Update awareness.
+Do not recap commands, repair rounds, hashes, quality profiles, or check lists; they stay in the receipts. If asked whether the diagram was verified, answer in one line, such as “Automated checks passed; not visually reviewed.” Give receipt links and details only for reproducibility or troubleshooting. Disclose requested visual review that could not run, and claim visual inspection only when performed.
 
 Example: `Created [Checkout request timing](/abs/path/checkout-timing.html). Durations are illustrative, not measured.`
 
 For an explainer, reply in two or three lines: the conclusion and the page link. Mention gates only when one failed or writing warnings remain; do not paste the draft.
-
-After an explainer made on request, when no `[archify explainer: ...]` line is in context, end the reply with one optional line offering the proactive mode, once per conversation, for example: “需要的话，以后遇到解释、对比、排查这类问题，我可以主动做成这样的页面，要开启吗？” If the user accepts, add `[archify explainer: proactive] Make an Archify explainer page, unasked, for explanations, comparisons, decisions, diagnoses, reviews and plans that need a table, steps or several sections.` to the global rules file of the current agent (such as `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md` or `~/.config/devin/AGENTS.md`) and name the file; deleting the line turns it off. If the user declines, offer to add `[archify explainer: on-demand]` so the question does not return.
