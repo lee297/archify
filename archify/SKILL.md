@@ -52,7 +52,7 @@ This fork is hardened for work on internal and customer systems:
 
 - **No update check.** `finalize` and `deliver` make no network request; the receipt reports `update.status: "unavailable"` with reason `disabled`. Do not set `ARCHIFY_UPDATE_CHECK_ENABLED`, do not run `scripts/check-update.mjs`, and do not offer to update Archify. The user updates the checkout with git.
 - **Never upload.** Do not send a candidate, an HTML artifact, an export or a capture to any gallery, paste site, hosting or sharing service, and do not offer to. Hand over the local path.
-- **Brand capture is the only network access left.** `brands capture <url>` and a `brand.url` in a candidate fetch that site's icon. Use them only with a public vendor URL the user supplied; never pass an internal, customer or private address, and never set `ARCHIFY_BRAND_ALLOW_PRIVATE`.
+- **Brand capture is the only network access left.** `brands capture <url>` and a `brand.url` in a candidate fetch that site's icon. Use them only with a public vendor URL the user supplied; never pass an internal, customer or private address, and never set `ARCHIFY_BRAND_ALLOW_PRIVATE`. A `brand.url` is fetched again on every render, so before finalizing a candidate someone else wrote, check its `brand.url` values and remove any the user did not supply.
 - **Repository-backed diagrams carry source.** They embed file paths, the remote URL and code excerpts, so treat the HTML as confidential as the repository it came from and say so when handing it over.
 - **Never edit agent rules files.** Do not add an `[archify explainer: ...]` line, or anything else, to `~/.claude/CLAUDE.md`, `AGENTS.md` or any other rules file, and do not offer to.
 

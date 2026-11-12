@@ -1,5 +1,7 @@
 # Update awareness
 
+> **Fork: disabled.** The update check is off in this fork, so no receipt sets `update.noticeRequired`. Do not follow the steps below and do not run `scripts/check-update.mjs`.
+
 Read this file when a `finalize` or standalone `deliver` receipt has `update.noticeRequired: true`.
 
 Give one compact update notice in the user's language, with `installedVersion`, `availableVersion`, and the official `releaseNotes` link. Briefly describe the changes using `update.summary` when present, then ask whether the user would like help updating (for example, “要我帮你更新吗？”). Do not name the current client or prescribe a number of summary points. A process message or tool output does not replace the final notice.
